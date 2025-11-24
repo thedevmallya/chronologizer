@@ -1,0 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+h1 {
+    color: #333;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+.input-section {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 150px;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 0.9em;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+button {
+    padding: 10px 20px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #5568d3;
+}
+
+#clear-all {
+    background: #e74c3c;
+}
+
+#clear-all:hover {
+    background: #c0392b;
+}
+
+.timeline-container {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 200px;
+}
+
+#timeline-svg {
+    display: block;
+}
+
+.timeline-line {
+    stroke: #667eea;
+    stroke-width: 3;
+}
+
+.event-circle {
+    fill: #667eea;
+    stroke: #764ba2;
+    stroke-width: 2;
+    transition: all 0.2s;
+}
+
+.timeline-group:hover .event-circle {
+    fill: #764ba2;
+    stroke: #667eea;
+    r: 9;
+}
+
+.timeline-date {
+    font-size: 14px;
+    font-weight: 600;
+    fill: #333;
+}
+
+.timeline-label {
+    font-size: 12px;
+    fill: #666;
+    font-style: italic;
+}
+
+.timeline-group:hover .timeline-line {
+    stroke: #764ba2;
+    stroke-width: 4;
+}
+
+.timeline-group {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.delete-button circle {
+    fill: #e74c3c;
+    transition: fill 0.2s;
+}
+
+.delete-button:hover circle {
+    fill: #c0392b;
+}
+
+.delete-x {
+    font-size: 11px;
+    font-weight: bold;
+    fill: white;
+    pointer-events: none;
+}
