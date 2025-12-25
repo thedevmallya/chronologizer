@@ -25,9 +25,25 @@ class Chronologizer {
         // Handle various date formats: years (1066), ISO dates (2024-01-15), etc.
         dateStr = dateStr.trim();
 
+        // Year with BC/BCE/AD/CE suffix (e.g., "428 BC", "100 BCE", "2024 AD")
+        const eraMatch = dateStr.match(/^(\d{1,5})\s*(BC|BCE|AD|CE)$/i);
+        if (eraMatch) {
+            let year = parseInt(eraMatch[1]);
+            const era = eraMatch[2].toUpperCase();
+            if (era === 'BC' || era === 'BCE') {
+                year = -year;
+            }
+            const date = new Date(0);
+            date.setFullYear(year, 0, 1);
+            return date;
+        }
+
         // Just a year (positive or negative for BCE)
         if (/^-?\d{1,5}$/.test(dateStr)) {
-            return new Date(parseInt(dateStr), 0, 1);
+            const year = parseInt(dateStr);
+            const date = new Date(0);
+            date.setFullYear(year, 0, 1);
+            return date;
         }
 
         // ISO date format
@@ -69,7 +85,7 @@ class Chronologizer {
         const endDate = this.parseDate(endDateStr);
 
         if (!startDate || !endDate) {
-            alert('Invalid date format. Use year (e.g., 1066) or ISO format (e.g., 2024-01-15)');
+            alert('Invalid date format. Use year (e.g., 1066, -500, 428 BC) or ISO format (e.g., 2024-01-15)');
             return;
         }
 
