@@ -46,7 +46,25 @@ class Chronologizer {
             return date;
         }
 
-        // ISO date format
+        // ISO date format (e.g., 2024-01-15 or 2024-02-29)
+        const isoMatch = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (isoMatch) {
+            const year = parseInt(isoMatch[1]);
+            const month = parseInt(isoMatch[2]);
+            const day = parseInt(isoMatch[3]);
+
+            const parsed = new Date(year, month - 1, day);
+
+            // Validate the date wasn't rolled over (e.g., Feb 29 on non-leap year)
+            if (parsed.getFullYear() === year &&
+                parsed.getMonth() === month - 1 &&
+                parsed.getDate() === day) {
+                return parsed;
+            }
+            return null; // Invalid date (e.g., Feb 29, 2025)
+        }
+
+        // Other date formats
         const parsed = new Date(dateStr);
         if (!isNaN(parsed.getTime())) {
             return parsed;
