@@ -22,7 +22,7 @@ Chronologizer is designed to help visualize and compare historical events, perio
 1. Open `index.html` in your web browser
 2. Enter a start date and end date
 3. Optionally add a descriptive label (max 256 characters)
-4. Click "Add Timeline" or press Enter
+4. Click "Chronologize" or press Enter
 5. Double-click any label to edit it
 6. Click the × button to remove individual timelines
 7. Use "Clear All" to reset the entire timeline

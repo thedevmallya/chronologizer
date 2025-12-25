@@ -10,7 +10,7 @@ class Chronologizer {
     }
 
     initializeEventListeners() {
-        document.getElementById('add-timeline').addEventListener('click', () => this.addTimeline());
+        document.getElementById('chronologize').addEventListener('click', () => this.addTimeline());
         document.getElementById('clear-all').addEventListener('click', () => this.clearAll());
 
         // Allow Enter key to add timeline

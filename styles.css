@@ -6,13 +6,13 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
     min-height: 100vh;
     padding: 20px;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     background: white;
     border-radius: 12px;
@@ -75,7 +75,7 @@ input[type="text"]:focus {
 
 button {
     padding: 10px 20px;
-    background: #667eea;
+    background: #047857;
     color: white;
     border: none;
     border-radius: 6px;
@@ -86,7 +86,7 @@ button {
 }
 
 button:hover {
-    background: #5568d3;
+    background: #1e3a34;
 }
 
 #clear-all {
