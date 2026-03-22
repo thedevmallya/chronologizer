@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(cat ~/.claude/hook_state/*.txt)",
+      "Read(//Users/devadas/.claude/**)",
+      "Bash(python3 /Users/devadas/.claude/timestamp_hook.py)",
+      "Bash(claude hooks:*)",
+      "Bash(claude --help hooks)",
+      "Bash(npm list:*)",
+      "Bash(claude --version)",
+      "Skill(update-config)",
+      "Bash(jq:*)"
     ]
   }
 }
