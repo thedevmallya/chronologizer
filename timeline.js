@@ -26,7 +26,7 @@ class Chronologizer {
 
         const fields = [
             { label: 'Start Date', className: 'start-date', placeholder: '1944-06-06', required: true },
-            { label: 'End Date', className: 'end-date', placeholder: '1944-06-30', required: true },
+            { label: 'End Date', className: 'end-date', placeholder: '1944-06-30', required: false },
             { label: 'Label', className: 'event-label', placeholder: 'Invasion of Normandy', required: false }
         ];
 
@@ -188,13 +188,14 @@ class Chronologizer {
             // Skip rows left entirely empty
             if (!startDateStr && !endDateStr && !label) continue;
 
-            if (!startDateStr || !endDateStr) {
-                alert(`${rowLabel}Please enter both start and end dates`);
+            if (!startDateStr) {
+                alert(`${rowLabel}Please enter a start date`);
                 return;
             }
 
             const startDate = this.parseDate(startDateStr);
-            const endDate = this.parseDate(endDateStr);
+            // Blank end date means a single-date event (endDate = startDate)
+            const endDate = endDateStr ? this.parseDate(endDateStr) : startDate;
 
             if (!startDate || !endDate) {
                 alert(`${rowLabel}Invalid date format. Use year (e.g., 1066, -500, 428 BC) or ISO format (e.g., 2024-01-15)`);
@@ -206,15 +207,18 @@ class Chronologizer {
                 return;
             }
 
+            const isSingleDate = startDate.getTime() === endDate.getTime();
             entries.push({
                 startDate,
                 endDate,
-                label: label || `${this.formatDate(startDate)} - ${this.formatDate(endDate)}`
+                label: label || (isSingleDate
+                    ? this.formatDate(startDate)
+                    : `${this.formatDate(startDate)} - ${this.formatDate(endDate)}`)
             });
         }
 
         if (entries.length === 0) {
-            alert('Please enter both start and end dates');
+            alert('Please enter a start date');
             return;
         }
 

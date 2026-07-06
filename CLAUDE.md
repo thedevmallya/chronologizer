@@ -32,6 +32,7 @@ The `Chronologizer` class maintains:
 - `chronologize()` validates and adds all non-empty rows at once (fully empty rows are skipped), then resets to a single blank row
 
 **Single-Date vs Duration Events**:
+- End Date is optional: leaving it blank creates a single-date event (`endDate` is set to `startDate`)
 - Detected by comparing `startDate.getTime() === endDate.getDate.getTime()`
 - Single-date events render as circles, durations as horizontal lines
 - Both share the same data structure and rendering pipeline
@@ -60,7 +61,7 @@ The `Chronologizer` class maintains:
 ## Important Constraints
 
 - **Label limit**: 256 characters (enforced in HTML `maxlength` and edit input)
-- **Date validation**: Start date cannot be after end date (equals is allowed for single-date events)
+- **Date validation**: Start date is required; end date is optional (blank = single-date event) and cannot be before start date
 - **SVG coordinates**: Padding of 120px left/right, 20px top for positioning
 - **Line height**: 60px vertical spacing between timeline rows
 - **Circle radius**: Single-date events use 7px radius (smaller than original to be subtle)
