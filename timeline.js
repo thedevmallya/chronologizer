@@ -348,11 +348,18 @@ class Chronologizer {
         }
 
         const scaleInfo = this.calculateScale();
-        const totalHeight = this.padding.top + (this.timelines.length * this.lineHeight);
+
+        // Single-date rows draw text above (date) and below (label) the circle,
+        // so they need a taller band than duration rows to avoid colliding with neighbors
+        const rowHeights = this.timelines.map(t =>
+            t.startDate.getTime() === t.endDate.getTime() ? 80 : this.lineHeight);
+        const totalHeight = this.padding.top + rowHeights.reduce((sum, h) => sum + h, 0);
         this.svg.setAttribute('height', totalHeight);
 
+        let rowTop = this.padding.top;
         this.timelines.forEach((timeline, index) => {
-            const y = this.padding.top + (index * this.lineHeight) + 30;
+            const y = rowTop + rowHeights[index] / 2;
+            rowTop += rowHeights[index];
             const startX = this.timeToX(timeline.startDate, scaleInfo);
             const endX = this.timeToX(timeline.endDate, scaleInfo);
 

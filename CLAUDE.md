@@ -63,7 +63,7 @@ The `Chronologizer` class maintains:
 - **Label limit**: 256 characters (enforced in HTML `maxlength` and edit input)
 - **Date validation**: Start date is required; end date is optional (blank = single-date event) and cannot be before start date
 - **SVG coordinates**: Padding of 120px left/right, 20px top for positioning
-- **Line height**: 60px vertical spacing between timeline rows
+- **Line height**: 60px vertical band per duration row; single-date rows get 80px (they draw text above and below the circle), with row positions computed cumulatively in `render()`
 - **Circle radius**: Single-date events use 7px radius (smaller than original to be subtle)
 - **Delete button**: 7px radius, positioned 30px right of duration end or 50px right of single-date circle center; invisible (opacity 0) until its timeline row is hovered
 
