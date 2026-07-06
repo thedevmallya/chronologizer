@@ -21,7 +21,7 @@ The app consists of three files that work together:
 ### Core Data Model
 
 The `Chronologizer` class maintains:
-- `this.timelines[]`: Array of timeline objects with `{startDate, endDate, label}`
+- `this.timelines[]`: Array of timeline objects with `{startDate, endDate, label}`, kept sorted by start date ascending (ties broken by end date) so the earliest timeline renders on top
 - `this.editingIndex`: Tracks which timeline label is currently being edited (null when none)
 
 ### Key Architecture Patterns
@@ -64,7 +64,7 @@ The `Chronologizer` class maintains:
 - **SVG coordinates**: Padding of 120px left/right, 20px top for positioning
 - **Line height**: 60px vertical spacing between timeline rows
 - **Circle radius**: Single-date events use 7px radius (smaller than original to be subtle)
-- **Delete button**: 7px radius, positioned 30px right of duration end or 50px right of single-date circle center
+- **Delete button**: 7px radius, positioned 30px right of duration end or 50px right of single-date circle center; invisible (opacity 0) until its timeline row is hovered
 
 ## Styling Conventions
 
@@ -73,6 +73,6 @@ SVG elements use CSS classes for styling:
 - `.event-circle`: Single-date event circles
 - `.timeline-date`: Date text labels
 - `.timeline-label`: User-provided descriptive text
-- `.delete-button`: Delete button group with nested circle and × text
+- `.delete-button`: Delete button group (circle + × text), revealed on `.timeline-group:hover`
 
 Hover effects change colors and increase stroke/radius slightly.

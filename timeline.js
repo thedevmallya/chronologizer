@@ -330,6 +330,11 @@ class Chronologizer {
     }
 
     render() {
+        // Keep the list sorted in memory: earliest start date on top (ties broken by end date).
+        // Sorting here guarantees the invariant no matter how timelines were added or changed,
+        // and keeps array indexes (used by delete/edit) consistent with render order.
+        this.timelines.sort((a, b) => a.startDate - b.startDate || a.endDate - b.endDate);
+
         // Clear existing content
         this.svg.innerHTML = '';
 
@@ -450,7 +455,7 @@ class Chronologizer {
                 }
             }
 
-            // Delete button
+            // Delete button (hidden until the row is hovered — see .delete-button CSS)
             const deleteButton = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             deleteButton.setAttribute('class', 'delete-button');
             deleteButton.style.cursor = 'pointer';
