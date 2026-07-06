@@ -38,12 +38,65 @@ header p {
     font-size: 1.1em;
 }
 
+.title-section {
+    margin-bottom: 15px;
+}
+
+/* Match the width of a date column in .input-row:
+   (100% − row buttons (2 × 42px + 8px gap) − 3 × 15px flex gaps) / 3 columns */
+.title-section .input-group {
+    width: calc((100% - 137px) / 3);
+    min-width: 150px;
+}
+
+.chronology-title {
+    text-align: center;
+    color: #333;
+    font-size: 1.6em;
+    margin-bottom: 15px;
+}
+
 .input-section {
+    margin-bottom: 30px;
+}
+
+.input-row {
     display: flex;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     flex-wrap: wrap;
     align-items: flex-end;
+}
+
+.row-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.row-button {
+    width: 42px;
+    padding: 10px 0;
+    font-size: 1.1em;
+    line-height: 1;
+}
+
+.remove-row {
+    background: #e74c3c;
+}
+
+.remove-row:hover {
+    background: #c0392b;
+}
+
+.remove-row:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
 }
 
 .input-group {
@@ -60,12 +113,21 @@ label {
     font-size: 0.9em;
 }
 
+.required {
+    color: #e74c3c;
+}
+
 input[type="text"] {
     padding: 10px;
     border: 2px solid #ddd;
     border-radius: 6px;
     font-size: 1em;
     transition: border-color 0.3s;
+}
+
+input[type="text"]::placeholder {
+    color: #c8c8c8;
+    opacity: 1;
 }
 
 input[type="text"]:focus {

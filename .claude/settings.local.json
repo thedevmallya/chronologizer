@@ -11,7 +11,10 @@
       "Bash(npm list:*)",
       "Bash(claude --version)",
       "Skill(update-config)",
-      "Bash(jq:*)"
+      "Bash(jq:*)",
+      "Bash(git -C /Users/devadas/sources/chronologizer status --short)",
+      "Bash(git -C /Users/devadas/sources/chronologizer diff --stat)",
+      "Bash(git push *)"
     ]
   }
 }

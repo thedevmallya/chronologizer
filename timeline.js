@@ -5,20 +5,106 @@ class Chronologizer {
         this.lineHeight = 60;
         this.padding = { left: 120, right: 120, top: 20 };
         this.editingIndex = null;
+        this.rowsContainer = document.getElementById('input-rows');
 
         this.initializeEventListeners();
+        this.addInputRow();
     }
 
     initializeEventListeners() {
-        document.getElementById('chronologize').addEventListener('click', () => this.addTimeline());
+        document.getElementById('chronologize').addEventListener('click', () => this.chronologize());
         document.getElementById('clear-all').addEventListener('click', () => this.clearAll());
 
-        // Allow Enter key to add timeline
-        ['start-date', 'end-date', 'label'].forEach(id => {
-            document.getElementById(id).addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') this.addTimeline();
-            });
+        document.getElementById('chronology-title-input').addEventListener('input', (e) => {
+            this.updateTitle(e.target.value);
         });
+    }
+
+    addInputRow(afterRow = null) {
+        const row = document.createElement('div');
+        row.className = 'input-row';
+
+        const fields = [
+            { label: 'Start Date', className: 'start-date', placeholder: '1944-06-06', required: true },
+            { label: 'End Date', className: 'end-date', placeholder: '1944-06-30', required: true },
+            { label: 'Label', className: 'event-label', placeholder: 'Invasion of Normandy', required: false }
+        ];
+
+        fields.forEach(field => {
+            const group = document.createElement('div');
+            group.className = 'input-group';
+
+            const label = document.createElement('label');
+            label.textContent = field.label;
+            if (field.required) {
+                const asterisk = document.createElement('span');
+                asterisk.className = 'required';
+                asterisk.textContent = '*';
+                label.appendChild(asterisk);
+            }
+            label.appendChild(document.createTextNode(':'));
+            group.appendChild(label);
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = field.className;
+            input.placeholder = field.placeholder;
+            input.maxLength = 256;
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.chronologize();
+            });
+            group.appendChild(input);
+
+            row.appendChild(group);
+        });
+
+        const buttonGroup = document.createElement('div');
+        buttonGroup.className = 'row-buttons';
+
+        const addButton = document.createElement('button');
+        addButton.type = 'button';
+        addButton.className = 'row-button add-row';
+        addButton.textContent = '+';
+        addButton.title = 'Add another row';
+        addButton.addEventListener('click', () => this.addInputRow(row));
+        buttonGroup.appendChild(addButton);
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'row-button remove-row';
+        removeButton.textContent = '−';
+        removeButton.title = 'Remove this row';
+        removeButton.addEventListener('click', () => this.removeInputRow(row));
+        buttonGroup.appendChild(removeButton);
+
+        row.appendChild(buttonGroup);
+
+        if (afterRow) {
+            afterRow.after(row);
+        } else {
+            this.rowsContainer.appendChild(row);
+        }
+
+        this.updateRemoveButtons();
+        return row;
+    }
+
+    removeInputRow(row) {
+        if (this.rowsContainer.children.length <= 1) return;
+        row.remove();
+        this.updateRemoveButtons();
+    }
+
+    updateRemoveButtons() {
+        const isSingleRow = this.rowsContainer.children.length === 1;
+        this.rowsContainer.querySelectorAll('.remove-row').forEach(button => {
+            button.disabled = isSingleRow;
+        });
+    }
+
+    resetInputRows() {
+        this.rowsContainer.innerHTML = '';
+        this.addInputRow();
     }
 
     parseDate(dateStr) {
@@ -89,45 +175,66 @@ class Chronologizer {
         });
     }
 
-    addTimeline() {
-        const startDateStr = document.getElementById('start-date').value;
-        const endDateStr = document.getElementById('end-date').value;
-        const label = document.getElementById('label').value;
+    chronologize() {
+        const rows = Array.from(this.rowsContainer.querySelectorAll('.input-row'));
+        const entries = [];
 
-        if (!startDateStr || !endDateStr) {
+        for (let i = 0; i < rows.length; i++) {
+            const rowLabel = rows.length > 1 ? `Row ${i + 1}: ` : '';
+            const startDateStr = rows[i].querySelector('.start-date').value.trim();
+            const endDateStr = rows[i].querySelector('.end-date').value.trim();
+            const label = rows[i].querySelector('.event-label').value.trim();
+
+            // Skip rows left entirely empty
+            if (!startDateStr && !endDateStr && !label) continue;
+
+            if (!startDateStr || !endDateStr) {
+                alert(`${rowLabel}Please enter both start and end dates`);
+                return;
+            }
+
+            const startDate = this.parseDate(startDateStr);
+            const endDate = this.parseDate(endDateStr);
+
+            if (!startDate || !endDate) {
+                alert(`${rowLabel}Invalid date format. Use year (e.g., 1066, -500, 428 BC) or ISO format (e.g., 2024-01-15)`);
+                return;
+            }
+
+            if (startDate > endDate) {
+                alert(`${rowLabel}Start date cannot be after end date`);
+                return;
+            }
+
+            entries.push({
+                startDate,
+                endDate,
+                label: label || `${this.formatDate(startDate)} - ${this.formatDate(endDate)}`
+            });
+        }
+
+        if (entries.length === 0) {
             alert('Please enter both start and end dates');
             return;
         }
 
-        const startDate = this.parseDate(startDateStr);
-        const endDate = this.parseDate(endDateStr);
-
-        if (!startDate || !endDate) {
-            alert('Invalid date format. Use year (e.g., 1066, -500, 428 BC) or ISO format (e.g., 2024-01-15)');
-            return;
-        }
-
-        if (startDate > endDate) {
-            alert('Start date cannot be after end date');
-            return;
-        }
-
-        this.timelines.push({
-            startDate,
-            endDate,
-            label: label || `${this.formatDate(startDate)} - ${this.formatDate(endDate)}`
-        });
-
-        // Clear inputs
-        document.getElementById('start-date').value = '';
-        document.getElementById('end-date').value = '';
-        document.getElementById('label').value = '';
-
+        this.timelines.push(...entries);
+        this.resetInputRows();
         this.render();
+    }
+
+    updateTitle(title) {
+        const titleElement = document.getElementById('chronology-title');
+        const trimmed = title.trim();
+        titleElement.textContent = trimmed;
+        titleElement.hidden = trimmed === '';
     }
 
     clearAll() {
         this.timelines = [];
+        document.getElementById('chronology-title-input').value = '';
+        this.updateTitle('');
+        this.resetInputRows();
         this.render();
     }
 
